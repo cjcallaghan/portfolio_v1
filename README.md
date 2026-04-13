@@ -1,16 +1,65 @@
-# React + Vite
+# Portfolio v1
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio site built with React 19 + Vite. Features a warm parchment design system, dark mode, and a data-driven project showcase.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 19** + **Vite 8**
+- **React Router v7** — client-side routing
+- **Plain CSS** — custom properties design system, no Tailwind or CSS Modules
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Dark / light mode with `localStorage` persistence
+- Data-driven projects — add a project by editing one file
+- WCAG 2.1 AA accessible (skip links, focus-visible, ARIA labels)
+- Responsive layout with touch-friendly targets
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**Prerequisites:** Node.js 18+
+
+```bash
+npm install
+npm run dev
+```
+
+The dev server starts at `http://localhost:5173` with hot module replacement.
+
+## Commands
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start development server |
+| `npm run build` | Production build → `dist/` |
+| `npm run preview` | Preview the production build locally |
+| `npm run lint` | Run ESLint |
+
+## Project Structure
+
+```
+src/
+  styles/
+    global.css       # All CSS custom properties (design system)
+    theme.css        # Dark mode overrides ([data-theme="dark"])
+  App.jsx            # ThemeContext, ThemeProvider, Router, Routes
+  main.jsx           # Entry point
+  components/        # Navbar, Footer, ProjectCard
+  pages/             # Home, About, Projects, ProjectDetail, Contact
+  data/
+    projects.js      # Single source of truth for all project data
+public/
+  images/            # Project screenshots
+```
+
+## Adding a Project
+
+All project data lives in `src/data/projects.js`. To add a new project:
+
+1. Copy an existing object in the `projects` array.
+2. Assign a unique `id` (increment from the last one).
+3. Fill in `title`, `description`, `tags`, `liveUrl`, `githubUrl`, and `fullDescription`.
+4. Place any images in `public/images/` and update the `image` field.
+5. Set `featured: true` to include it as a homepage candidate (only the first two featured projects appear on the homepage).
+
+The Home and Projects pages update automatically — no other files need to change.
