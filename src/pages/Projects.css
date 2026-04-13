@@ -1,0 +1,107 @@
+/*
+  Projects.css
+  ──────────────────────────────────────────────────────────────────────────────
+  Styles for the full Projects page.
+  ──────────────────────────────────────────────────────────────────────────────
+*/
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   PAGE HERO
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.projects-page__hero {
+  padding-top: var(--space-24);
+  padding-bottom: var(--space-16);
+  background-color: var(--color-bg-primary);
+}
+
+.projects-page__hero-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-5);
+}
+
+/* Decorative yellow accent mark */
+.projects-page__eyebrow {
+  display: block;
+  width: 40px;
+  height: 4px;
+  background-color: var(--color-accent);
+  border-radius: 2px;
+  margin-bottom: var(--space-2);
+}
+
+/* Page heading */
+.projects-page__heading {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-primary);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+}
+
+/* Subtext */
+.projects-page__subtext {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   PROJECTS GRID
+   3 columns desktop → 2 tablet → 1 mobile
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.projects-page__grid-section {
+  padding-top: var(--space-10);
+  padding-bottom: var(--space-24);
+  background-color: var(--color-bg-primary);
+}
+
+.projects-page__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Empty state */
+.projects-page__empty {
+  padding: var(--space-12) 0;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Tablet: 3 → 2 columns */
+@media (max-width: 900px) {
+  .projects-page__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile: 2 → 1 column */
+@media (max-width: 600px) {
+  .projects-page__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .projects-page__heading {
+    font-size: var(--text-3xl);
+  }
+
+  .projects-page__hero {
+    padding-top: var(--space-16);
+  }
+}

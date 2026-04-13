@@ -1,0 +1,36 @@
+<!doctype html>
+<!--
+  lang="en" is required for screen readers to use the correct language/accent.
+  Accessibility requirement: WCAG 3.1.1
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--
+      Default page title. Each page component updates this via useEffect.
+      Format used throughout: "Page Name — Connor Callaghan"
+    -->
+    <title>Connor Callaghan — Frontend Developer &amp; Designer</title>
+
+    <!--
+      Meta description shown in search engine results.
+      TODO: Update this with your own description if desired.
+    -->
+    <meta
+      name="description"
+      content="Connor Callaghan is a frontend developer and UI/UX designer building clean websites and thoughtful digital experiences."
+    />
+  </head>
+  <body>
+    <!--
+      React mounts the entire app inside #root.
+      The skip-link rendered inside App.jsx is the first focusable element,
+      allowing keyboard users to skip the navbar (WCAG 2.4.1).
+    -->
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

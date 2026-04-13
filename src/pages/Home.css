@@ -1,0 +1,263 @@
+/*
+  Home.css
+  ──────────────────────────────────────────────────────────────────────────────
+  Styles for the Home page: hero, featured projects, and contact CTA sections.
+  ──────────────────────────────────────────────────────────────────────────────
+*/
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   PAGE WRAPPER
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.home {
+  /* Each section handles its own vertical padding */
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   SECTION 1: HERO
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.home__hero {
+  padding-top: var(--space-24);
+  padding-bottom: var(--space-24);
+
+  /* Subtle background differentiation from the default page background */
+  background-color: var(--color-bg-primary);
+}
+
+.home__hero-inner {
+  /* Stack content vertically, left-aligned */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-5);
+  max-width: 720px;  /* constrain hero text width for readability */
+}
+
+/* Decorative yellow accent mark above the heading */
+.home__hero-eyebrow {
+  display: block;
+  width: 40px;
+  height: 4px;
+  background-color: var(--color-accent);  /* THE yellow */
+  border-radius: 2px;
+  margin-bottom: var(--space-2);
+}
+
+/* Hero name — large display serif */
+.home__hero-name {
+  font-family: var(--font-display);
+  font-size: var(--text-5xl);
+  font-weight: var(--weight-regular);     /* DM Serif Display has one weight */
+  color: var(--color-text-primary);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+
+  /* === ANIMATION — hero name fades up on mount ===
+     The .page-enter class on <main> drives this; no extra class needed here.
+     To remove: delete this comment block and set animation to none. */
+}
+
+/* Tagline — a short punchy line below the name */
+.home__hero-tagline {
+  font-family: var(--font-display);       /* serif for the tagline too, for visual weight */
+  font-size: var(--text-2xl);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+  margin: 0;
+}
+
+/* Subtext — availability and location */
+.home__hero-subtext {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+  margin: 0;
+}
+
+/* Location highlight within the subtext */
+.home__hero-location {
+  color: var(--color-text-primary);
+  font-weight: var(--weight-medium);
+}
+
+/* CTA button row */
+.home__hero-actions {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;                        /* stack on very narrow screens */
+  margin-top: var(--space-3);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   SECTION 2: FEATURED PROJECTS
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.home__featured {
+  padding-top: var(--space-20);
+  padding-bottom: var(--space-20);
+  background-color: var(--color-bg-secondary);  /* slightly warmer background */
+}
+
+/* Section heading — "Featured Work" */
+.home__section-heading {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-primary);
+  line-height: var(--leading-tight);
+  margin: 0 0 var(--space-10) 0;
+}
+
+/* 2-column grid for the two featured project cards */
+.home__projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-6);
+}
+
+/* Empty state (shown when no featured projects exist) */
+.home__empty-state {
+  padding: var(--space-12) 0;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+}
+
+/* "See All Projects →" link below the cards */
+.home__see-all {
+  margin-top: var(--space-10);
+  display: flex;
+  justify-content: center;
+}
+
+.home__see-all-link {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  letter-spacing: var(--tracking-wide);
+
+  /* === ANIMATION — color change on hover === */
+  transition: color var(--transition-fast);
+}
+
+.home__see-all-link:hover {
+  color: var(--color-accent);
+}
+
+.home__see-all-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   SECTION 3: CONTACT CTA
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.home__contact-cta {
+  padding-top: var(--space-24);
+  padding-bottom: var(--space-24);
+  background-color: var(--color-bg-primary);
+}
+
+.home__contact-cta-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-5);
+  max-width: 640px;
+}
+
+/* "Let's work together" heading */
+.home__contact-heading {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-primary);
+  line-height: var(--leading-tight);
+  margin: 0;
+}
+
+/* Subtext beneath the heading */
+.home__contact-subtext {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+  margin: 0;
+}
+
+/* Large styled email link */
+.home__contact-email {
+  font-family: var(--font-body);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-light);
+  color: var(--color-text-primary);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--color-accent);  /* yellow underline on the email */
+
+  /* === ANIMATION — color transitions on hover === */
+  transition: color var(--transition-fast);
+}
+
+.home__contact-email:hover {
+  color: var(--color-accent);
+}
+
+.home__contact-email:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Tablet: 2-column grid becomes 1-column */
+@media (max-width: 768px) {
+  .home__projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home__hero-name {
+    font-size: var(--text-4xl);
+  }
+
+  .home__hero {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  .home__featured {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  .home__contact-cta {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .home__hero-name {
+    font-size: var(--text-3xl);
+  }
+
+  .home__hero-tagline {
+    font-size: var(--text-xl);
+  }
+
+  .home__contact-email {
+    font-size: var(--text-xl);
+  }
+}

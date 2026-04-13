@@ -1,0 +1,6 @@
+/*
+  index.css — intentionally empty.
+  All styles live in /src/styles/global.css, /src/styles/theme.css,
+  and the per-component / per-page CSS files.
+  This file is kept so Vite doesn't complain about a missing import.
+*/

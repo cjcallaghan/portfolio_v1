@@ -1,0 +1,15 @@
+# Build output
+dist/
+
+# Dependencies
+node_modules/
+
+# Static assets (binary files Claude can't use)
+public/images/
+src/assets/
+
+# Lock files (large, auto-generated, rarely relevant)
+package-lock.json
+
+# Vite cache
+.vite/

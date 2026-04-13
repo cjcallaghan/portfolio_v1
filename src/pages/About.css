@@ -1,0 +1,204 @@
+/*
+  About.css
+  ──────────────────────────────────────────────────────────────────────────────
+  Styles for the About page.
+  ──────────────────────────────────────────────────────────────────────────────
+*/
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   PAGE HERO
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.about__hero {
+  padding-top: var(--space-24);
+  padding-bottom: var(--space-20);
+  background-color: var(--color-bg-primary);
+}
+
+.about__hero-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-5);
+  max-width: 720px;
+}
+
+/* Decorative yellow accent mark above the heading */
+.about__eyebrow {
+  display: block;
+  width: 40px;
+  height: 4px;
+  background-color: var(--color-accent);
+  border-radius: 2px;
+  margin-bottom: var(--space-2);
+}
+
+/* Page heading */
+.about__heading {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-primary);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+}
+
+/* Bio paragraphs */
+.about__bio {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-loose);
+  margin: 0;
+}
+
+/* Location text highlight */
+.about__location {
+  color: var(--color-text-primary);
+  font-weight: var(--weight-medium);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   SKILLS SECTION
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.about__skills {
+  padding-top: var(--space-20);
+  padding-bottom: var(--space-20);
+  background-color: var(--color-bg-secondary);
+}
+
+/* "Skills & Tools" section heading */
+.about__section-heading {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-primary);
+  line-height: var(--leading-tight);
+  margin: 0 0 var(--space-10) 0;
+}
+
+/* Grid of skill category groups */
+.about__skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-10) var(--space-8);
+}
+
+/* Individual category group */
+.about__skill-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Category label (e.g. "Languages & Markup") */
+.about__skill-category {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-muted);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* Tag list within a category */
+.about__skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   CURRENTLY LEARNING CALLOUT
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.about__learning {
+  padding-top: var(--space-20);
+  padding-bottom: var(--space-24);
+  background-color: var(--color-bg-primary);
+}
+
+/* The callout card */
+.about__learning-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-6);
+  padding: var(--space-8);
+  background-color: var(--color-accent-subtle);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-lg);
+  max-width: 640px;
+}
+
+/* Yellow accent dot on the left */
+.about__learning-dot {
+  display: block;
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  background-color: var(--color-accent);
+  border-radius: 50%;
+  margin-top: 6px;  /* visually align with the first line of text */
+}
+
+.about__learning-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* "Currently learning" heading */
+.about__learning-heading {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-primary);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* Learning body text */
+.about__learning-text {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .about__heading {
+    font-size: var(--text-3xl);
+  }
+
+  .about__hero {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  .about__skills {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  .about__skills-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .about__learning {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+}

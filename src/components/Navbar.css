@@ -1,0 +1,352 @@
+/*
+  Navbar.css
+  ──────────────────────────────────────────────────────────────────────────────
+  Styles for the sticky navigation bar at the top of every page.
+
+  Layout:
+    .navbar               — the <header> element; sticky, full width
+    .navbar__inner        — inner flex row: logo | (spacer) | nav | right buttons
+    .navbar__logo         — site name / logo on the left
+    .navbar__nav          — desktop navigation container
+    .navbar__links        — horizontal list of nav links
+    .navbar__link         — individual nav link
+    .navbar__right        — theme toggle + hamburger button wrapper
+    .navbar__theme-toggle — dark/light mode toggle button
+    .navbar__hamburger    — hamburger icon button (mobile only)
+    .navbar__mobile-menu  — full-width dropdown on mobile
+  ──────────────────────────────────────────────────────────────────────────────
+*/
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   NAVBAR SHELL
+   Sticky, sits at the top of the viewport, full width.
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;                        /* sit above all page content */
+
+  background-color: var(--color-bg-primary);
+  border-bottom: 1px solid var(--color-border);
+
+  /* === ANIMATION — shadow appears on scroll (see .navbar--scrolled below) === */
+  transition:
+    box-shadow var(--transition-base),
+    background-color var(--transition-base);
+}
+
+/* Scrolled state — subtle shadow appears when user scrolls past 10px */
+.navbar--scrolled {
+  /* === ANIMATION — scroll shadow === */
+  box-shadow: var(--shadow-sm);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   INNER ROW
+   A flex container that positions logo, nav, and controls in a single line.
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.navbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;                        /* fixed navbar height */
+  gap: var(--space-6);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   LOGO / SITE NAME
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.navbar__logo {
+  font-family: var(--font-display);    /* serif font for the logo */
+  font-size: var(--text-xl);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  flex-shrink: 0;                      /* don't let it compress on narrow screens */
+
+  /* === ANIMATION — subtle color shift on hover === */
+  transition: color var(--transition-fast);
+}
+
+.navbar__logo:hover {
+  color: var(--color-accent);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   DESKTOP NAVIGATION LINKS
+   Hidden on mobile (< 768px), shown on desktop.
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.navbar__nav {
+  /* Takes up available space, pushing the right controls to the far right */
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar__link {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  position: relative;                  /* needed for the active underline pseudo-element */
+  padding-bottom: var(--space-1);
+  min-height: 44px;                    /* Accessibility: minimum touch target (WCAG 2.5.5) */
+  display: inline-flex;
+  align-items: center;
+
+  /* === ANIMATION — color transition on hover === */
+  transition: color var(--transition-fast);
+}
+
+.navbar__link:hover {
+  color: var(--color-text-primary);
+}
+
+.navbar__link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+/*
+  Active link indicator — a small yellow underline dot beneath the current page link.
+  Uses a pseudo-element so no extra HTML is needed.
+*/
+.navbar__link--active {
+  color: var(--color-text-primary);
+  font-weight: var(--weight-medium);
+}
+
+.navbar__link--active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--color-accent);  /* THE yellow underline */
+  border-radius: 2px;
+
+  /* === ANIMATION — underline slides in when link becomes active === */
+  animation: slideInUnderline var(--transition-base) ease both;
+}
+
+/* === ANIMATION — underline slide-in keyframe === */
+@keyframes slideInUnderline {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   RIGHT SIDE CONTROLS (theme toggle + hamburger)
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.navbar__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+/* ── THEME TOGGLE BUTTON ── */
+
+.navbar__theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;                         /* Accessibility: minimum touch target (WCAG 2.5.5) */
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-accent);          /* THE yellow — used intentionally here for the icon */
+
+  /* === ANIMATION — background tint on hover === */
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.navbar__theme-toggle:hover {
+  background-color: var(--color-accent-subtle);
+}
+
+.navbar__theme-toggle:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* === ANIMATION — icon rotates slightly on click === */
+.navbar__theme-toggle:active .navbar__theme-icon {
+  transform: rotate(20deg);
+  transition: transform var(--transition-fast);
+}
+
+.navbar__theme-icon {
+  /* === ANIMATION — smooth icon transition === */
+  transition: transform var(--transition-base);
+}
+
+/* ── HAMBURGER BUTTON — mobile only ── */
+
+.navbar__hamburger {
+  display: none;                       /* hidden on desktop; shown on mobile via media query */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-2);
+
+  transition: background-color var(--transition-fast);
+}
+
+.navbar__hamburger:hover {
+  background-color: var(--color-bg-tertiary);
+}
+
+.navbar__hamburger:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.navbar__hamburger-bar {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background-color: var(--color-text-primary);
+  border-radius: 2px;
+
+  /* === ANIMATION — bars animate into X when menu is open === */
+  transition:
+    transform var(--transition-base),
+    opacity var(--transition-fast);
+}
+
+/* When menu is open, transform the three bars into an X */
+.navbar--menu-open .navbar__hamburger-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.navbar--menu-open .navbar__hamburger-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar--menu-open .navbar__hamburger-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   MOBILE MENU
+   Full-width dropdown that appears below the navbar on mobile.
+   Hidden by default; toggled by the hamburger button.
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.navbar__mobile-menu {
+  display: none;                       /* hidden on desktop */
+  position: absolute;
+  top: 64px;                           /* just below the navbar */
+  left: 0;
+  right: 0;
+  background-color: var(--color-bg-primary);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-4) 0;
+
+  /* === ANIMATION — slides down when opening === */
+  transform: translateY(-8px);
+  opacity: 0;
+  transition:
+    transform var(--transition-base),
+    opacity var(--transition-base);
+}
+
+.navbar__mobile-menu--open {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.navbar__mobile-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar__mobile-link {
+  display: block;
+  padding: var(--space-4) var(--container-padding);
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+
+  /* === ANIMATION — background slides in on hover === */
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.navbar__mobile-link:hover {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+}
+
+.navbar__mobile-link--active {
+  color: var(--color-text-primary);
+  font-weight: var(--weight-medium);
+  border-left: 3px solid var(--color-accent);  /* yellow left border on active link */
+  padding-left: calc(var(--container-padding) - 3px);
+}
+
+.navbar__mobile-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   RESPONSIVE — MOBILE BREAKPOINT
+   Below 768px: hide desktop nav, show hamburger and mobile menu.
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  /* Hide desktop nav links */
+  .navbar__nav {
+    display: none;
+  }
+
+  /* Show the hamburger button */
+  .navbar__hamburger {
+    display: flex;
+  }
+
+  /* Make the mobile menu display when open */
+  .navbar__mobile-menu {
+    display: block;
+  }
+
+  /* Navbar needs position: relative so the absolute mobile menu is positioned correctly */
+  .navbar {
+    position: sticky;
+  }
+}

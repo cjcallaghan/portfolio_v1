@@ -1,0 +1,66 @@
+/*
+  theme.css
+  ──────────────────────────────────────────────────────────────────────────────
+  Dark mode variable overrides.
+
+  How it works:
+  - Light mode variables live in global.css on :root (the default).
+  - When the user toggles dark mode, the ThemeContext in App.jsx adds
+    data-theme="dark" to the <html> element.
+  - This file's [data-theme="dark"] selector overrides the relevant variables.
+  - Components and pages don't need to do anything special — they already use
+    the variables, so they automatically reflect the dark values.
+
+  To add a new dark mode color: define the light version in global.css first,
+  then add the dark override here.
+  ──────────────────────────────────────────────────────────────────────────────
+*/
+
+[data-theme="dark"] {
+  /* ══════════════════════════════════════════════
+     BACKGROUND COLORS — darkened, still warm
+     ══════════════════════════════════════════════ */
+  --color-bg-primary: #1A1914;       /* very dark warm-tinted black */
+  --color-bg-secondary: #242218;     /* slightly lighter — cards, sections */
+  --color-bg-tertiary: #2E2C20;      /* hover states, subtle separators */
+
+  /* ══════════════════════════════════════════════
+     TEXT COLORS — inverted, keeping warm undertones
+     ══════════════════════════════════════════════ */
+  --color-text-primary: #F0EDE0;     /* warm off-white — headings */
+  --color-text-secondary: #B8B4A4;   /* warm mid-gray — body text */
+  --color-text-muted: #7A7668;       /* muted — captions, meta */
+
+  /* ══════════════════════════════════════════════
+     ACCENT COLORS — yellow stays, slightly richer
+     for readability on dark backgrounds
+     ══════════════════════════════════════════════ */
+  --color-accent: #D9C94F;           /* same yellow, slightly richer for dark bg */
+  --color-accent-hover: #C9B83A;     /* hover */
+  --color-accent-subtle: #2A2810;    /* dark yellow tint for backgrounds */
+
+  /* ══════════════════════════════════════════════
+     EARTH TONES — darkened to match palette feel
+     ══════════════════════════════════════════════ */
+  --color-earth-warm: #8C7055;       /* darker tan */
+  --color-earth-sage: #6E7D68;       /* darker sage */
+
+  /* ══════════════════════════════════════════════
+     BORDER & DIVIDER — warm dark borders
+     ══════════════════════════════════════════════ */
+  --color-border: #3A3828;           /* dark warm border */
+  --color-border-strong: #504E3C;    /* stronger border for dark mode */
+
+  /* ══════════════════════════════════════════════
+     UTILITY
+     ══════════════════════════════════════════════ */
+  --color-link: #B8B4A4;             /* links match body text in dark mode */
+
+  /* ══════════════════════════════════════════════
+     SHADOWS — slightly stronger in dark mode so
+     cards still read as elevated
+     ══════════════════════════════════════════════ */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.20);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.30);
+}

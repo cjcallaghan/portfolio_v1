@@ -1,0 +1,204 @@
+/*
+  ProjectCard.css
+  ──────────────────────────────────────────────────────────────────────────────
+  Styles for the reusable project card component.
+  ──────────────────────────────────────────────────────────────────────────────
+*/
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   CARD SHELL
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.project-card {
+  background-color: var(--color-bg-secondary);
+  border: 0.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;                    /* clip the image to the card's rounded corners */
+
+  /*
+    cursor: pointer is set explicitly here because the card is a navigation
+    element (it wraps a <Link>). Without this, some browsers may not show
+    the pointer cursor, making the card feel unclickable.
+  */
+  cursor: pointer;
+
+  /* === ANIMATIONS — card lift and left border on hover ===
+     To remove these effects: delete the transition below and the
+     .project-card:hover rules further down this file.
+     Everything else will still work — only the motion is removed. */
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base),
+    border-color var(--transition-base);
+}
+
+/* === ANIMATION — card lifts on hover === */
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+/* === ANIMATION — yellow left border slides in on hover ===
+   Uses box-shadow instead of border to avoid layout shift
+   (adding a border would change the element's size). */
+.project-card:hover {
+  border-left: 3px solid var(--color-accent);
+}
+
+.project-card:focus-within {
+  /* Show focus ring when any child element is focused (e.g. via keyboard tab) */
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   CARD LINK WRAPPER
+   The <Link> that makes the whole card clickable.
+   display: flex + flex-direction: column makes the card a vertical stack.
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.project-card__link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;                        /* fill the card's full height */
+  text-decoration: none;
+  color: inherit;                      /* don't apply link color to card content */
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   PROJECT IMAGE
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.project-card__image-wrapper {
+  /* 16:9 aspect ratio for all project images */
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background-color: var(--color-bg-tertiary);
+}
+
+.project-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;                   /* crop image to fill the 16:9 box */
+
+  /* === ANIMATION — subtle scale on card hover === */
+  transition: transform var(--transition-slow);
+}
+
+.project-card:hover .project-card__image {
+  transform: scale(1.03);
+}
+
+/* ── Image placeholder (shown when no image is provided) ── */
+
+.project-card__image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Subtle diagonal stripe pattern as a tasteful placeholder */
+  background-color: var(--color-bg-tertiary);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 8px,
+    var(--color-border) 8px,
+    var(--color-border) 9px
+  );
+}
+
+.project-card__placeholder-text {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  color: var(--color-border-strong);
+  z-index: 1;
+  background-color: var(--color-bg-tertiary);
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   CARD BODY
+   The text content section below the image.
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.project-card__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;                             /* grow to fill remaining card height */
+  padding: var(--space-6);
+  gap: var(--space-3);
+}
+
+/* Project title */
+.project-card__title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-regular);  /* DM Serif Display only has one weight */
+  color: var(--color-text-primary);
+  line-height: var(--leading-tight);
+  margin: 0;
+}
+
+/* Short description */
+.project-card__description {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+  margin: 0;
+
+  /* Limit to 3 lines with an ellipsis if text is longer */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Tech tag list */
+.project-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-top: auto;                    /* push tags towards the bottom of the body */
+}
+
+/* External links row */
+.project-card__links {
+  display: flex;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+}
+
+.project-card__ext-link {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-weight: var(--weight-medium);
+  min-height: 44px;                    /* Accessibility: minimum touch target (WCAG 2.5.5) */
+  display: inline-flex;
+  align-items: center;
+
+  /* === ANIMATION — color transition on hover === */
+  transition: color var(--transition-fast);
+}
+
+.project-card__ext-link:hover {
+  color: var(--color-accent);
+}
+
+.project-card__ext-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
