@@ -16,7 +16,6 @@
 
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';  /* NavLink automatically adds an "active" class to the current page's link */
-import { useTheme } from '../App';            /* Custom hook to read and toggle the theme */
 import './Navbar.css';
 
 /* The navigation links array — add or remove items here to change the nav */
@@ -33,9 +32,6 @@ export default function Navbar() {
 
   /* Whether the mobile menu is open */
   const [menuOpen, setMenuOpen] = useState(false);
-
-  /* Theme state and toggle function from context */
-  const { theme, toggleTheme } = useTheme();
 
   /*
     Listen for scroll events. When the user scrolls past 10px, set scrolled to
@@ -120,66 +116,8 @@ export default function Navbar() {
           </ul>
         </nav>
 
-        {/* ── RIGHT SIDE: THEME TOGGLE + HAMBURGER ── */}
+        {/* ── RIGHT SIDE: HAMBURGER ── */}
         <div className="navbar__right">
-
-          {/* Dark mode toggle button */}
-          <button
-            className="navbar__theme-toggle"
-            onClick={toggleTheme}
-            aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
-            title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
-          >
-            {/*
-              === ANIMATION — theme toggle icon
-              The icon swaps between sun (light mode) and moon (dark mode).
-              The spin animation is defined in Navbar.css.
-              To remove the spin: delete the .navbar__theme-toggle:active rule in Navbar.css.
-            */}
-            {theme === 'light' ? (
-              /* Moon icon — shown in light mode (clicking switches to dark) */
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-                className="navbar__theme-icon"
-                width="20"
-                height="20"
-              >
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-              </svg>
-            ) : (
-              /* Sun icon — shown in dark mode (clicking switches to light) */
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-                className="navbar__theme-icon"
-                width="20"
-                height="20"
-              >
-                <circle cx="12" cy="12" r="5" />
-                <line x1="12" y1="1" x2="12" y2="3" />
-                <line x1="12" y1="21" x2="12" y2="23" />
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                <line x1="1" y1="12" x2="3" y2="12" />
-                <line x1="21" y1="12" x2="23" y2="12" />
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-              </svg>
-            )}
-          </button>
 
           {/* Hamburger menu button — only visible on mobile (< 768px) */}
           <button
