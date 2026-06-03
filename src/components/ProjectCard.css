@@ -32,17 +32,12 @@
     border-color var(--transition-base);
 }
 
-/* === ANIMATION — card lifts on hover === */
+/* === ANIMATION — card lifts and yellow left border on hover ===
+   Inset box-shadow simulates the left border without layout shift
+   (a real border would change the element's size and push siblings). */
 .project-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-}
-
-/* === ANIMATION — yellow left border slides in on hover ===
-   Uses box-shadow instead of border to avoid layout shift
-   (adding a border would change the element's size). */
-.project-card:hover {
-  border-left: 3px solid var(--color-accent);
+  box-shadow: var(--shadow-md), inset 3px 0 0 var(--color-accent);
 }
 
 .project-card:focus-within {
