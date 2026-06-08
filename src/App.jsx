@@ -27,7 +27,7 @@
 */
 
 import { createContext, useContext, useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 
 /* Shared layout components */
 import Navbar from './components/Navbar';
@@ -53,6 +53,14 @@ export const ThemeContext = createContext({
 
 /* Custom hook — any component can call useTheme() to get theme + toggleTheme */
 export const useTheme = () => useContext(ThemeContext);
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [pathname]);
+  return null;
+}
 
 /* ──────────────────────────────────────────────────────────────────────────────
    THEME PROVIDER COMPONENT
@@ -110,6 +118,8 @@ export default function App() {
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
+
+        <ScrollToTop />
 
         {/* Sticky navigation bar, shared across all pages */}
         <Navbar />
