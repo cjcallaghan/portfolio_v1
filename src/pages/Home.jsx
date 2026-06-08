@@ -12,11 +12,14 @@
 
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTheme } from '../App';
 import { projects } from '../data/projects';
 import ProjectCard from '../components/ProjectCard';
 import './Home.css';
 
 export default function Home() {
+  const { theme } = useTheme();
+
   /* Update the browser tab title when this page mounts */
   useEffect(() => {
     document.title = 'Connor Callaghan — Frontend Developer & Designer';
@@ -79,7 +82,7 @@ export default function Home() {
           {/* CTA buttons */}
           <div className="home__hero-actions">
             {/* Primary: navigates to the Projects page */}
-            <Link to="/projects" className="btn btn-primary">
+            <Link to="/projects" className="btn btn-primary" style={theme === 'dark' ? { color: '#000000' } : undefined}>
               View My Work
             </Link>
             {/* Secondary: navigates to the Contact page */}
