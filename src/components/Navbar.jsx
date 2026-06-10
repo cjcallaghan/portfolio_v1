@@ -34,6 +34,22 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   /*
+    Liquid-glass mode. When true, the navbar morphs from a plain full-width
+    bar into a centered, rounded, frosted-glass floating island.
+
+    This is its OWN persisted setting (separate from light/dark theme), so the
+    user's choice survives refreshes. It pairs with the site theme: the glass
+    surface tints darker automatically in dark mode (see theme.css).
+  */
+  const [glass, setGlass] = useState(() => {
+    return localStorage.getItem('navStyle') === 'glass';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('navStyle', glass ? 'glass' : 'plain');
+  }, [glass]);
+
+  /*
     Listen for scroll events. When the user scrolls past 10px, set scrolled to
     true so the CSS class adds a shadow to the navbar.
   */
@@ -76,7 +92,7 @@ export default function Navbar() {
       explicit helps some older screen readers.
     */
     <header
-      className={`navbar${scrolled ? ' navbar--scrolled' : ''}${menuOpen ? ' navbar--menu-open' : ''}`}
+      className={`navbar${scrolled ? ' navbar--scrolled' : ''}${menuOpen ? ' navbar--menu-open' : ''}${glass ? ' navbar--glass' : ''}`}
       role="banner"
     >
       <div className="navbar__inner container">
@@ -116,8 +132,48 @@ export default function Navbar() {
           </ul>
         </nav>
 
-        {/* ── RIGHT SIDE: HAMBURGER ── */}
+        {/* ── RIGHT SIDE: MORPH TOGGLE + HAMBURGER ── */}
         <div className="navbar__right">
+
+          {/*
+            Liquid-glass morph toggle. Flips the navbar between its plain bar
+            and frosted floating-island forms. aria-pressed communicates the
+            on/off state to assistive tech; the icon animates between a flat
+            line (plain) and a droplet (glass) via CSS.
+          */}
+          <button
+            className="navbar__morph-toggle"
+            onClick={() => setGlass(prev => !prev)}
+            aria-pressed={glass}
+            aria-label={glass ? 'Switch to plain navbar' : 'Switch to liquid glass navbar'}
+            title={glass ? 'Plain navbar' : 'Liquid glass navbar'}
+          >
+            <svg
+              className="navbar__morph-icon"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              {/* Droplet outline — the "glass" glyph */}
+              <path
+                className="navbar__morph-droplet"
+                d="M12 3.5c3.2 3.6 5.5 6.6 5.5 9.4a5.5 5.5 0 0 1-11 0c0-2.8 2.3-5.8 5.5-9.4Z"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinejoin="round"
+              />
+              {/* Inner sparkle highlight inside the droplet */}
+              <path
+                className="navbar__morph-spark"
+                d="M10 13.5a2.2 2.2 0 0 0 2 1.8"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
 
           {/* Hamburger menu button — only visible on mobile (< 768px) */}
           <button

@@ -32,16 +32,52 @@
   background-color: var(--color-bg-primary);
   border-bottom: 1px solid var(--color-border);
 
-  /* === ANIMATION — shadow appears on scroll (see .navbar--scrolled below) === */
+  /* Horizontal inset that opens up when morphing to glass (insets the island). */
+  padding-left: 0;
+  padding-right: 0;
+
+  /* === ANIMATION — shadow on scroll + plain↔glass shell morph === */
   transition:
     box-shadow var(--transition-base),
-    background-color var(--transition-base);
+    top var(--transition-morph),
+    background-color var(--transition-morph),
+    border-color var(--transition-morph),
+    padding var(--transition-morph);
 }
 
 /* Scrolled state — subtle shadow appears when user scrolls past 10px */
 .navbar--scrolled {
   /* === ANIMATION — scroll shadow === */
   box-shadow: var(--shadow-sm);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   LIQUID GLASS MORPH
+   When .navbar--glass is set, the shell goes transparent and borderless so the
+   inner row can float free as a frosted island. The shell also gains side
+   padding, which insets the island from the screen edges (esp. on mobile).
+   The actual island styling lives on .navbar__inner below.
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.navbar--glass {
+  /*
+    Float the island lower AND make it stick there: the sticky `top` offset
+    sets the exact distance the header parks from the viewport top, both at
+    rest and once scrolled. (We use this instead of a margin on the inner row,
+    because a top margin collapses through the transparent header and the
+    float vanishes the moment it sticks.)
+  */
+  top: var(--space-5);
+  background-color: transparent;
+  border-bottom-color: transparent;
+  box-shadow: none;                    /* the island carries its own shadow */
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+}
+
+/* The scroll shadow belongs to the island, not the shell, once we're glass. */
+.navbar--glass.navbar--scrolled {
+  box-shadow: none;
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════
@@ -55,6 +91,43 @@
   justify-content: space-between;
   height: 64px;                        /* fixed navbar height */
   gap: var(--space-6);
+
+  /*
+    Morph base — the inner row is the element that physically becomes the
+    floating glass island. In plain mode these values are all "neutral"
+    (square corners, transparent, no blur). The .navbar--glass overrides
+    below flip them; everything transitions on --transition-morph so the
+    bar visibly "liquifies" into a pill.
+  */
+  border: 1px solid transparent;
+  border-radius: 0;
+  background-color: transparent;
+  -webkit-backdrop-filter: blur(0) saturate(100%);
+  backdrop-filter: blur(0) saturate(100%);
+  will-change: max-width, border-radius, backdrop-filter;
+  transition:
+    max-width var(--transition-morph),
+    border-radius var(--transition-morph),
+    background-color var(--transition-morph),
+    border-color var(--transition-morph),
+    box-shadow var(--transition-morph),
+    backdrop-filter var(--transition-morph),
+    -webkit-backdrop-filter var(--transition-morph);
+}
+
+/* ── The floating glass island ──
+   Narrower max-width + auto side margins (from .container) keep it centered;
+   the lift off the top edge comes from the shell's sticky `top` offset above;
+   the pill radius + frosted surface complete the liquid-glass look. Colors
+   come from the --glass-* tokens, so dark mode retints automatically. */
+.navbar--glass .navbar__inner {
+  max-width: 760px;
+  border-radius: 999px;                /* full pill */
+  background-color: var(--glass-bg);
+  border-color: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════
@@ -161,6 +234,36 @@
   to   { transform: scaleX(1); }
 }
 
+/* ── Links inside the glass island ──
+   Tuck them into soft frosted pills so they read as part of the island
+   rather than floating text. The yellow underline indicator still applies
+   on top, keeping the active-page cue consistent across both modes. */
+.navbar--glass .navbar__link {
+  padding-left: var(--space-3);
+  padding-right: var(--space-3);
+  padding-bottom: 0;
+  border-radius: 999px;
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    padding var(--transition-morph),
+    border-radius var(--transition-morph);
+}
+
+/* In the island, the cue is the pill itself — drop the underline entirely so
+   it doesn't dangle below the rounded link. */
+.navbar--glass .navbar__link::after {
+  display: none;
+}
+
+/* Hover and active both read as a faint accent-tinted pill. Active stays
+   distinct via its heavier text weight + primary color (inherited from
+   .navbar__link--active). */
+.navbar--glass .navbar__link:hover,
+.navbar--glass .navbar__link--active {
+  background-color: var(--color-accent-subtle);
+}
+
 /* ══════════════════════════════════════════════════════════════════════════════
    RIGHT SIDE CONTROLS (hamburger)
    ══════════════════════════════════════════════════════════════════════════════ */
@@ -170,6 +273,73 @@
   align-items: center;
   gap: var(--space-3);
   flex-shrink: 0;
+}
+
+/* ── MORPH TOGGLE — flips plain ↔ liquid glass ── */
+
+.navbar__morph-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;                        /* WCAG 2.5.5 touch target */
+  border-radius: var(--radius-md);
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-morph),
+    border-radius var(--transition-morph);
+}
+
+.navbar__morph-toggle:hover {
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-tertiary);
+}
+
+.navbar__morph-toggle:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Pressed (glass active) — accent it and round to a pill so the control
+   itself echoes the island it just created. In glass mode the hover fill
+   uses the frosted token instead of the opaque tertiary bg. */
+.navbar__morph-toggle[aria-pressed="true"] {
+  color: var(--color-text-primary);
+  border-radius: 999px;
+}
+
+.navbar--glass .navbar__morph-toggle:hover {
+  background-color: var(--glass-bg-strong);
+  border-color: var(--glass-border);
+}
+
+/* Icon morph — the droplet gently rounds/lifts and the inner spark fades in
+   when glass turns on, reinforcing the "liquid" state change. */
+.navbar__morph-icon {
+  transition: transform var(--transition-morph);
+}
+
+.navbar__morph-droplet {
+  transition: opacity var(--transition-base);
+}
+
+.navbar__morph-spark {
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.navbar__morph-toggle[aria-pressed="true"] .navbar__morph-icon {
+  transform: scale(1.06);
+}
+
+.navbar__morph-toggle[aria-pressed="true"] .navbar__morph-spark {
+  opacity: 1;
 }
 
 /* ── HAMBURGER BUTTON — mobile only ── */
@@ -253,6 +423,23 @@
 .navbar__mobile-menu--open {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ── Mobile menu in glass mode ──
+   The floating island sits lower than the plain bar, so drop the menu below
+   it and turn it into a matching frosted, rounded panel inset from the edges.
+   Uses the same --glass-* tokens, so it retints in dark mode too. */
+.navbar--glass .navbar__mobile-menu {
+  top: 72px;                           /* just below the 64px island (offset is relative to the header) */
+  left: var(--space-4);
+  right: var(--space-4);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  background-color: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  overflow: hidden;                    /* clip link hover fills to the rounded corners */
 }
 
 .navbar__mobile-links {
