@@ -20,7 +20,8 @@
     element (it wraps a <Link>). Without this, some browsers may not show
     the pointer cursor, making the card feel unclickable.
   */
-  cursor: pointer;
+  cursor: pointer; 
+  /* penar */
 
   /* === ANIMATIONS — card lift and left border on hover ===
      To remove these effects: delete the transition below and the
