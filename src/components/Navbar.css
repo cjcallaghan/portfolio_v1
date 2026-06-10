@@ -182,8 +182,16 @@
   display: inline-flex;
   align-items: center;
 
-  /* === ANIMATION — color transition on hover === */
-  transition: color var(--transition-fast);
+  /* === ANIMATION — hover color (fast) + plain↔glass pill morph (morph) ===
+     The padding/border-radius timing lives here on the BASE rule (not on the
+     .navbar--glass override) so the links ease in BOTH directions. CSS reads
+     transition timing from the end state, so if the morph timing only existed
+     in glass mode, switching back would snap the links instead of easing. */
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    padding var(--transition-morph),
+    border-radius var(--transition-morph);
 }
 
 .navbar__link:hover {
@@ -243,11 +251,6 @@
   padding-right: var(--space-3);
   padding-bottom: 0;
   border-radius: 999px;
-  transition:
-    color var(--transition-fast),
-    background-color var(--transition-fast),
-    padding var(--transition-morph),
-    border-radius var(--transition-morph);
 }
 
 /* In the island, the cue is the pill itself — drop the underline entirely so
