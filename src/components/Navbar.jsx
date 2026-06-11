@@ -16,6 +16,7 @@
 
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';  /* NavLink automatically adds an "active" class to the current page's link */
+import { useCreativeMode } from '../App';     /* site-wide "creative mode" switch (see App.jsx) */
 import './Navbar.css';
 
 /* The navigation links array — add or remove items here to change the nav */
@@ -34,20 +35,18 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   /*
-    Liquid-glass mode. When true, the navbar morphs from a plain full-width
-    bar into a centered, rounded, frosted-glass floating island.
+    Creative mode — the site-wide expressive switch (see App.jsx). The navbar is
+    the control that flips it AND the first component to respond to it: when
+    creative mode is on, this bar morphs from a plain full-width strip into a
+    centered, rounded, frosted liquid-glass floating island.
 
-    This is its OWN persisted setting (separate from light/dark theme), so the
-    user's choice survives refreshes. It pairs with the site theme: the glass
-    surface tints darker automatically in dark mode (see theme.css).
+    We read the global flag rather than keeping a local one so that pressing this
+    button can also push every other creative-mode-aware component into its
+    creative form. The glass styling itself keys off html[data-creative="on"]
+    (set by CreativeModeProvider) in Navbar.css, and retints in dark mode via
+    the --glass-* tokens in theme.css.
   */
-  const [glass, setGlass] = useState(() => {
-    return localStorage.getItem('navStyle') === 'glass';
-  });
-
-  useEffect(() => {
-    localStorage.setItem('navStyle', glass ? 'glass' : 'plain');
-  }, [glass]);
+  const { creative, toggleCreative } = useCreativeMode();
 
   /*
     Listen for scroll events. When the user scrolls past 10px, set scrolled to
@@ -92,7 +91,7 @@ export default function Navbar() {
       explicit helps some older screen readers.
     */
     <header
-      className={`navbar${scrolled ? ' navbar--scrolled' : ''}${menuOpen ? ' navbar--menu-open' : ''}${glass ? ' navbar--glass' : ''}`}
+      className={`navbar${scrolled ? ' navbar--scrolled' : ''}${menuOpen ? ' navbar--menu-open' : ''}`}
       role="banner"
     >
       <div className="navbar__inner container">
@@ -136,17 +135,19 @@ export default function Navbar() {
         <div className="navbar__right">
 
           {/*
-            Liquid-glass morph toggle. Flips the navbar between its plain bar
-            and frosted floating-island forms. aria-pressed communicates the
-            on/off state to assistive tech; the icon animates between a flat
-            line (plain) and a droplet (glass) via CSS.
+            Creative mode toggle. Flips the site-wide creative mode on/off; the
+            navbar's own response is to morph between its plain bar and frosted
+            floating-island forms. aria-pressed communicates the on/off state to
+            assistive tech, and the label/title spell out the creative-mode state
+            so screen-reader users know exactly what the button will do. The icon
+            spark fades in when creative mode is on (see Navbar.css).
           */}
           <button
             className="navbar__morph-toggle"
-            onClick={() => setGlass(prev => !prev)}
-            aria-pressed={glass}
-            aria-label={glass ? 'Switch to plain navbar' : 'Switch to liquid glass navbar'}
-            title={glass ? 'Plain navbar' : 'Liquid glass navbar'}
+            onClick={toggleCreative}
+            aria-pressed={creative}
+            aria-label={creative ? 'Turn off creative mode' : 'Turn on creative mode'}
+            title={creative ? 'Creative mode: on' : 'Creative mode: off'}
           >
             <svg
               className="navbar__morph-icon"

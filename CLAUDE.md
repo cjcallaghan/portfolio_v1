@@ -41,6 +41,18 @@ public/images/     ← Project screenshots (referenced by projects.js)
 
 `ThemeContext` and `useTheme()` are exported from `App.jsx`. Theme state is initialized from `localStorage`, falling back to `prefers-color-scheme`, then `'light'`. `useEffect` syncs it to `document.documentElement.setAttribute('data-theme', theme)` and `localStorage`.
 
+### Creative mode
+
+"Creative mode" is a **site-wide expressive state, separate from light/dark theme**. It's the single switch behind the navbar's creative-mode toggle button, and the shared mechanism for letting any component offer a more playful / decorative variant of itself. **When the user asks to "put X in creative mode", "make X creative", or wants something to change "when creative mode is on", they mean: give that component a distinct creative-mode form that activates off this same global switch — not a new per-component toggle.**
+
+- State lives in `CreativeModeContext` / `useCreativeMode()` (exported from `App.jsx`), mirroring `ThemeContext`. Initialized from `localStorage` (`creativeMode` = `'on'` / `'off'`), defaulting **off**.
+- `CreativeModeProvider` syncs it to `document.documentElement` as `data-creative="on" | "off"` — the global hook everything keys off (exactly like `data-theme` drives dark mode).
+- **To make a component respond to creative mode:**
+  - *Visual-only:* style against the attribute selector `[data-creative="on"] .your-class { … }`. The navbar is the reference example — its liquid-glass floating island is its creative-mode form (see `Navbar.css`).
+  - *Behavior / content:* call `useCreativeMode()` for the `creative` boolean and `toggleCreative()`.
+- **Accessibility (required):** whenever creative mode changes what a control does or how it reads, that control's `aria-label` / `aria-pressed` / `title` MUST state the creative-mode status. The navbar toggle is the canonical pattern (`aria-pressed={creative}`, label flips between "Turn on/off creative mode").
+- Only the navbar button **toggles** creative mode; every other component **responds** to it. Don't add separate per-component creative switches.
+
 ### Routing
 
 Five routes in `App.jsx`: `/`, `/about`, `/projects`, `/projects/:id`, `/contact`. `ProjectDetail` reads the `:id` param with `useParams()` and finds the matching object via `projects.find(p => p.id === Number(id))`.

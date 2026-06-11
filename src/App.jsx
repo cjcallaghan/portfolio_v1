@@ -54,6 +54,31 @@ export const ThemeContext = createContext({
 /* Custom hook — any component can call useTheme() to get theme + toggleTheme */
 export const useTheme = () => useContext(ThemeContext);
 
+/* ──────────────────────────────────────────────────────────────────────────────
+   CREATIVE MODE CONTEXT
+   "Creative mode" is a SITE-WIDE expressive state, separate from light/dark theme.
+   When it's on, components are free to morph into their more playful, decorative
+   forms — the navbar, for instance, melts into a frosted liquid-glass island.
+
+   This is the single switch the navbar's creative-mode button flips, and the
+   mechanism ANY component can hook into to offer a creative variant of itself:
+     • CSS  — style against the html[data-creative="on"] attribute (mirrors how
+              dark mode keys off [data-theme="dark"]). Preferred for pure visuals.
+     • JS   — call useCreativeMode() to read `creative` / flip it via toggleCreative()
+              (e.g. to swap content or update accessibility labels).
+
+   Accessibility: whenever creative mode changes what a control does or how it reads,
+   that control's aria-label / aria-pressed / title MUST reflect the creative-mode
+   state. The navbar toggle is the reference pattern.
+   ────────────────────────────────────────────────────────────────────────────── */
+export const CreativeModeContext = createContext({
+  creative: false,
+  toggleCreative: () => {},
+});
+
+/* Custom hook — any component can call useCreativeMode() to read/flip creative mode */
+export const useCreativeMode = () => useContext(CreativeModeContext);
+
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -102,44 +127,82 @@ function ThemeProvider({ children }) {
 }
 
 /* ──────────────────────────────────────────────────────────────────────────────
+   CREATIVE MODE PROVIDER
+   Manages the creative-mode flag and syncs it to:
+     - The data-creative attribute on <html> ("on" / "off"), so any component can
+       react in pure CSS via html[data-creative="on"] — no prop drilling needed.
+     - localStorage (key: "creativeMode"), so the choice persists across refreshes.
+   ────────────────────────────────────────────────────────────────────────────── */
+function CreativeModeProvider({ children }) {
+  /* Initialize from localStorage; creative mode is off by default. */
+  const [creative, setCreative] = useState(() => {
+    return localStorage.getItem('creativeMode') === 'on';
+  });
+
+  /*
+    Whenever creative mode changes, mirror it onto <html> as data-creative.
+    This is the global switch every creative-mode-aware component keys off,
+    exactly like data-theme drives dark mode.
+  */
+  useEffect(() => {
+    document.documentElement.setAttribute('data-creative', creative ? 'on' : 'off');
+    localStorage.setItem('creativeMode', creative ? 'on' : 'off');
+  }, [creative]);
+
+  /* Flip creative mode on/off */
+  function toggleCreative() {
+    setCreative(prev => !prev);
+  }
+
+  return (
+    <CreativeModeContext.Provider value={{ creative, toggleCreative }}>
+      {children}
+    </CreativeModeContext.Provider>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────
    APP COMPONENT
-   The root of the component tree. Wraps everything in ThemeProvider (so all
-   components can access the theme) and BrowserRouter (so routing works).
+   The root of the component tree. Wraps everything in ThemeProvider and
+   CreativeModeProvider (so all components can access the theme + creative mode)
+   and BrowserRouter (so routing works).
    ────────────────────────────────────────────────────────────────────────────── */
 export default function App() {
   return (
     <ThemeProvider>
-      <BrowserRouter>
-        {/*
-          Skip to main content link — the very first focusable element on the page.
-          Visually hidden until focused via keyboard (styled in global.css).
-          Accessibility requirement: WCAG 2.4.1
-        */}
-        <a href="#main-content" className="skip-link">
-          Skip to main content
-        </a>
+      <CreativeModeProvider>
+        <BrowserRouter>
+          {/*
+            Skip to main content link — the very first focusable element on the page.
+            Visually hidden until focused via keyboard (styled in global.css).
+            Accessibility requirement: WCAG 2.4.1
+          */}
+          <a href="#main-content" className="skip-link">
+            Skip to main content
+          </a>
 
-        <ScrollToTop />
+          <ScrollToTop />
 
-        {/* Sticky navigation bar, shared across all pages */}
-        <Navbar />
+          {/* Sticky navigation bar, shared across all pages */}
+          <Navbar />
 
-        {/*
-          Routes — React Router renders only the matching route component.
-          The path="/projects/:id" uses a URL parameter (:id) that
-          ProjectDetail reads to know which project to display.
-        */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/projects/:id" element={<ProjectDetail />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
+          {/*
+            Routes — React Router renders only the matching route component.
+            The path="/projects/:id" uses a URL parameter (:id) that
+            ProjectDetail reads to know which project to display.
+          */}
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/projects/:id" element={<ProjectDetail />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
 
-        {/* Footer, shared across all pages */}
-        <Footer />
-      </BrowserRouter>
+          {/* Footer, shared across all pages */}
+          <Footer />
+        </BrowserRouter>
+      </CreativeModeProvider>
     </ThemeProvider>
   );
 }
