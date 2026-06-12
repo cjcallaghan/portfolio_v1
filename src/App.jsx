@@ -32,6 +32,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 /* Shared layout components */
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import CreativeBackground from './components/CreativeBackground';
 
 /* Page components — each one maps to a URL route */
 import Home from './pages/Home';
@@ -134,15 +135,28 @@ function ThemeProvider({ children }) {
      - localStorage (key: "creativeMode"), so the choice persists across refreshes.
    ────────────────────────────────────────────────────────────────────────────── */
 function CreativeModeProvider({ children }) {
-  /* Initialize from localStorage; creative mode is off by default. */
+  /*
+    Initialize from localStorage; creative mode is off by default.
+
+    We also set the data-creative attribute right here in the initializer — i.e.
+    during the first render, before the browser paints. A persisted "on" state
+    therefore renders directly in its creative form (the navbar paints as the
+    glass island immediately) instead of mounting plain and then morphing after
+    the effect runs, which would replay the morph animation on every refresh.
+    CSS transitions don't fire on an element's first painted style, so there's
+    no animation on load — only on a real toggle, which happens after paint.
+  */
   const [creative, setCreative] = useState(() => {
-    return localStorage.getItem('creativeMode') === 'on';
+    const on = localStorage.getItem('creativeMode') === 'on';
+    document.documentElement.setAttribute('data-creative', on ? 'on' : 'off');
+    return on;
   });
 
   /*
-    Whenever creative mode changes, mirror it onto <html> as data-creative.
-    This is the global switch every creative-mode-aware component keys off,
-    exactly like data-theme drives dark mode.
+    Keep <html>'s data-creative in sync on every subsequent toggle, and persist
+    the choice. (The initializer above already set it for the first paint; this
+    handles user-driven changes — which animate normally, since they occur after
+    the element has painted.)
   */
   useEffect(() => {
     document.documentElement.setAttribute('data-creative', creative ? 'on' : 'off');
@@ -180,6 +194,15 @@ export default function App() {
           <a href="#main-content" className="skip-link">
             Skip to main content
           </a>
+
+          {/*
+            Site-wide creative-mode background. Renders nothing unless creative
+            mode is on; lazy-loads its Three.js scene on first use. Sits behind
+            all content (fixed, z-index -1) and is aria-hidden, so its place in
+            the tree is purely for tidiness — it's kept after the skip-link to
+            preserve that as the first element.
+          */}
+          <CreativeBackground />
 
           <ScrollToTop />
 

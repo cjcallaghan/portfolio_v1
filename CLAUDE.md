@@ -53,6 +53,13 @@ public/images/     ← Project screenshots (referenced by projects.js)
 - **Accessibility (required):** whenever creative mode changes what a control does or how it reads, that control's `aria-label` / `aria-pressed` / `title` MUST state the creative-mode status. The navbar toggle is the canonical pattern (`aria-pressed={creative}`, label flips between "Turn on/off creative mode").
 - Only the navbar button **toggles** creative mode; every other component **responds** to it. Don't add separate per-component creative switches.
 
+**Three.js / WebGL responses** (animated background, future 3D cards) follow a fixed pattern — see `CreativeBackground.jsx` (wrapper) + `CreativeScene.jsx` (scene) as the reference:
+- CSS attribute selectors can't reach *inside* a WebGL canvas — drive Three.js off the **`creative` boolean** from `useCreativeMode()`, not `[data-creative="on"]`. (The attribute is still used to style the canvas's CSS box, e.g. `[data-creative="on"] body { background: transparent }` so the fixed background shows through.)
+- **Lazy-load `three`:** keep a tiny wrapper in the main bundle that `lazy(() => import('./Scene'))`s the heavy scene, so `three` only downloads when creative mode is first switched on. Never import `three` into a module that's in the initial bundle.
+- **Gate the render loop:** start `requestAnimationFrame` on mount; the effect cleanup MUST `cancelAnimationFrame` and `.dispose()` the renderer/geometry/material so WebGL is released when creative mode turns off.
+- **Respect `prefers-reduced-motion`** (WCAG 2.3.3): render a static, animation-free fallback instead of the WebGL scene when it's set.
+- Decorative canvases are `aria-hidden`; the real, accessible content stays in the DOM.
+
 ### Routing
 
 Five routes in `App.jsx`: `/`, `/about`, `/projects`, `/projects/:id`, `/contact`. `ProjectDetail` reads the `:id` param with `useParams()` and finds the matching object via `projects.find(p => p.id === Number(id))`.

@@ -1,0 +1,57 @@
+/*
+  CreativeBackground.css
+  ──────────────────────────────────────────────────────────────────────────────
+  Styles for the site-wide creative-mode background (CreativeBackground.jsx).
+
+  Layering: the container is fixed to the viewport and sits at z-index -1 — behind
+  all page content but in front of the page background. For it to actually show,
+  the body background is made transparent while creative mode is on (rule at the
+  bottom). It never intercepts pointer events.
+  ──────────────────────────────────────────────────────────────────────────────
+*/
+
+.creative-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;                 /* behind content, in front of the page background */
+  pointer-events: none;        /* never block clicks, hovers, or scrolling */
+
+  /*
+    Base wash. This shows:
+      - behind the canvas (and through any gaps),
+      - briefly while the lazy Three.js chunk is still loading,
+      - as the ENTIRE effect in the reduced-motion fallback (.creative-bg--static).
+    Built from design tokens, so it retints with light/dark theme.
+  */
+  background:
+    radial-gradient(circle at 30% 20%, var(--color-accent-subtle), transparent 60%),
+    var(--color-bg-primary);
+
+  /* Ease the wash in/out as theme changes, matching the rest of the site. */
+  transition: background-color var(--transition-base);
+}
+
+/* The WebGL canvas fills the container. */
+.creative-bg__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/*
+  Reduced-motion / static fallback: no canvas is rendered, so the .creative-bg
+  gradient above is the complete, motion-free background. (Kept as an explicit
+  hook in case you want to give the static version a distinct treatment later.)
+*/
+.creative-bg--static {
+  /* inherits the gradient wash from .creative-bg */
+}
+
+/*
+  Let the fixed background show through the page while creative mode is on.
+  Without this, body's opaque background would paint over the z-index:-1 canvas.
+  This follows the creative-mode convention: respond to html[data-creative="on"].
+*/
+[data-creative="on"] body {
+  background-color: transparent;
+}
