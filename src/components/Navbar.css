@@ -346,8 +346,8 @@
 }
 
 .navbar--glass .navbar__morph-toggle:hover {
-  background-color: var(--glass-bg-strong);
-  border-color: var(--glass-border);
+  background-color: var(--color-accent-subtle);
+  border-color: transparent;
 }
 
 /* Icon morph — power button scales up on hover and tints accent when active. */
@@ -364,7 +364,7 @@
 
 .navbar__morph-toggle[aria-pressed="true"] .navbar__morph-icon {
   transform: scale(1.06);
-  color: var(--color-earth-sage);
+  color: var(--color-text-primary);
 }
 
 .navbar__morph-toggle[aria-pressed="true"]:hover .navbar__morph-icon {
