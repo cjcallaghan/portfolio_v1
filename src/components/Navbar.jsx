@@ -14,7 +14,7 @@
   ──────────────────────────────────────────────────────────────────────────────
 */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';  /* NavLink automatically adds an "active" class to the current page's link */
 import './Navbar.css';
 
@@ -44,10 +44,23 @@ export default function Navbar() {
   const [glass, setGlass] = useState(() => {
     return localStorage.getItem('navStyle') === 'glass';
   });
+  const [morphing, setMorphing] = useState(false);
+  const morphTimerRef = useRef(null);
+
+  function toggleGlass() {
+    setGlass(prev => !prev);
+    setMorphing(true);
+    clearTimeout(morphTimerRef.current);
+    morphTimerRef.current = setTimeout(() => setMorphing(false), 900);
+  }
 
   useEffect(() => {
     localStorage.setItem('navStyle', glass ? 'glass' : 'plain');
   }, [glass]);
+
+  useEffect(() => {
+    return () => clearTimeout(morphTimerRef.current);
+  }, []);
 
   /*
     Listen for scroll events. When the user scrolls past 10px, set scrolled to
@@ -92,7 +105,7 @@ export default function Navbar() {
       explicit helps some older screen readers.
     */
     <header
-      className={`navbar${scrolled ? ' navbar--scrolled' : ''}${menuOpen ? ' navbar--menu-open' : ''}${glass ? ' navbar--glass' : ''}`}
+      className={`navbar${scrolled ? ' navbar--scrolled' : ''}${menuOpen ? ' navbar--menu-open' : ''}${glass ? ' navbar--glass' : ''}${morphing ? ' navbar--morphing' : ''}`}
       role="banner"
     >
       <div className="navbar__inner container">
@@ -142,7 +155,7 @@ export default function Navbar() {
           */}
           <button
             className="navbar__morph-toggle"
-            onClick={() => setGlass(prev => !prev)}
+            onClick={toggleGlass}
             aria-pressed={glass}
             aria-label={glass ? 'Switch to plain navbar' : 'Switch to creative mode'}
             title={glass ? 'Plain navbar' : 'Creative mode'}

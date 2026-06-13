@@ -258,8 +258,20 @@
   padding-right: var(--space-3);
   padding-bottom: 0;
   border-radius: 999px;
-  /* Delay the pill background-color until ~60% through the morph so the
-     tint doesn't appear before the island shape has mostly settled. */
+  /* No delay here — hover enter and leave are instant in steady glass state.
+     The delay is re-applied by .navbar--morphing (below) only during the
+     900ms mode-switch window. */
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    padding var(--transition-morph),
+    border-radius var(--transition-morph);
+}
+
+/* During a plain↔glass morph, delay the pill background-color so it waits
+   for the island to settle (plain→glass) or lingers long enough to hand off
+   to the underline (glass→plain). JS removes this class after 900ms. */
+.navbar--morphing .navbar__link {
   transition:
     color var(--transition-fast),
     background-color var(--transition-fast) 200ms,
