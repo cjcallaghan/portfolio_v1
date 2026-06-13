@@ -34,7 +34,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   /*
-    Liquid-glass mode. When true, the navbar morphs from a plain full-width
+    Creative mode. When true, the navbar morphs from a plain full-width
     bar into a centered, rounded, frosted-glass floating island.
 
     This is its OWN persisted setting (separate from light/dark theme), so the
@@ -136,17 +136,16 @@ export default function Navbar() {
         <div className="navbar__right">
 
           {/*
-            Liquid-glass morph toggle. Flips the navbar between its plain bar
+            Creative mode toggle. Flips the navbar between its plain bar
             and frosted floating-island forms. aria-pressed communicates the
-            on/off state to assistive tech; the icon animates between a flat
-            line (plain) and a droplet (glass) via CSS.
+            on/off state to assistive tech.
           */}
           <button
             className="navbar__morph-toggle"
             onClick={() => setGlass(prev => !prev)}
             aria-pressed={glass}
-            aria-label={glass ? 'Switch to plain navbar' : 'Switch to liquid glass navbar'}
-            title={glass ? 'Plain navbar' : 'Liquid glass navbar'}
+            aria-label={glass ? 'Switch to plain navbar' : 'Switch to creative mode'}
+            title={glass ? 'Plain navbar' : 'Creative mode'}
           >
             <svg
               className="navbar__morph-icon"
@@ -156,21 +155,19 @@ export default function Navbar() {
               fill="none"
               aria-hidden="true"
             >
-              {/* Droplet outline — the "glass" glyph */}
+              {/* Power button icon */}
               <path
-                className="navbar__morph-droplet"
-                d="M12 3.5c3.2 3.6 5.5 6.6 5.5 9.4a5.5 5.5 0 0 1-11 0c0-2.8 2.3-5.8 5.5-9.4Z"
+                d="M12 3v9"
                 stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinejoin="round"
-              />
-              {/* Inner sparkle highlight inside the droplet */}
-              <path
-                className="navbar__morph-spark"
-                d="M10 13.5a2.2 2.2 0 0 0 2 1.8"
-                stroke="currentColor"
-                strokeWidth="1.6"
+                strokeWidth="2"
                 strokeLinecap="round"
+              />
+              <path
+                d="M7.5 5.8A8 8 0 1 0 16.5 5.8"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                fill="none"
               />
             </svg>
           </button>

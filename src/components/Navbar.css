@@ -52,7 +52,7 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════
-   LIQUID GLASS MORPH
+   CREATIVE MODE MORPH
    When .navbar--glass is set, the shell goes transparent and borderless so the
    inner row can float free as a frosted island. The shell also gains side
    padding, which insets the island from the screen edges (esp. on mobile).
@@ -118,7 +118,7 @@
 /* ── The floating glass island ──
    Narrower max-width + auto side margins (from .container) keep it centered;
    the lift off the top edge comes from the shell's sticky `top` offset above;
-   the pill radius + frosted surface complete the liquid-glass look. Colors
+   the pill radius + frosted surface complete the creative mode look. Colors
    come from the --glass-* tokens, so dark mode retints automatically. */
 .navbar--glass .navbar__inner {
   max-width: 760px;
@@ -262,7 +262,7 @@
      tint doesn't appear before the island shape has mostly settled. */
   transition:
     color var(--transition-fast),
-    background-color var(--transition-fast) 175ms,
+    background-color var(--transition-fast) 200ms,
     padding var(--transition-morph),
     border-radius var(--transition-morph);
 }
@@ -294,7 +294,7 @@
   flex-shrink: 0;
 }
 
-/* ── MORPH TOGGLE — flips plain ↔ liquid glass ── */
+/* ── MORPH TOGGLE — flips plain ↔ creative mode ── */
 
 .navbar__morph-toggle {
   display: inline-flex;
@@ -338,27 +338,26 @@
   border-color: var(--glass-border);
 }
 
-/* Icon morph — the droplet gently rounds/lifts and the inner spark fades in
-   when glass turns on, reinforcing the "liquid" state change. */
+/* Icon morph — power button scales up on hover and tints accent when active. */
 .navbar__morph-icon {
-  transition: transform var(--transition-morph);
+  transition:
+    transform var(--transition-fast),
+    color var(--transition-fast);
 }
 
-.navbar__morph-droplet {
-  transition: opacity var(--transition-base);
-}
-
-.navbar__morph-spark {
-  opacity: 0;
-  transition: opacity var(--transition-base);
+.navbar__morph-toggle:hover .navbar__morph-icon {
+  transform: scale(1.15);
+  color: var(--color-text-primary);
 }
 
 .navbar__morph-toggle[aria-pressed="true"] .navbar__morph-icon {
   transform: scale(1.06);
+  color: var(--color-earth-sage);
 }
 
-.navbar__morph-toggle[aria-pressed="true"] .navbar__morph-spark {
-  opacity: 1;
+.navbar__morph-toggle[aria-pressed="true"]:hover .navbar__morph-icon {
+  transform: scale(1.15);
+  color: var(--color-accent);
 }
 
 /* ── HAMBURGER BUTTON — mobile only ── */

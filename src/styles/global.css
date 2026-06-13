@@ -170,7 +170,7 @@
   --transition-morph: 850ms cubic-bezier(0.4, 0, 0.2, 1);
 
   /* ══════════════════════════════════════════════
-     LIQUID GLASS SURFACE
+     CREATIVE MODE SURFACE
      Tokens for the frosted-glass look. Any element
      can opt in with the .glass-surface utility (see
      below) or by referencing these vars directly.
@@ -282,7 +282,7 @@ button {
 }
 
 /*
-  Liquid-glass surface — reusable frosted panel.
+  Creative mode surface — reusable frosted panel.
   Drop this class on any element (cards, modals, dropdowns, etc.) to give it
   the same frosted look the navbar morphs into. Pair it with the morph
   transition (transition: ... var(--transition-morph)) for animated reveals.
