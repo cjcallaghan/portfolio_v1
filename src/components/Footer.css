@@ -44,7 +44,7 @@
 }
 
 .footer__link:hover {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .footer__link:focus-visible {
@@ -65,7 +65,7 @@
 }
 
 .footer__top-link:hover {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .footer__top-link:focus-visible {
@@ -85,7 +85,7 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 
   /* === ANIMATION — background tint on hover === */
   transition:

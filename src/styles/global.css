@@ -34,16 +34,20 @@
      ══════════════════════════════════════════════ */
   --color-text-primary: #1C1A14;     /* near-black with a warm undertone — headings */
   --color-text-secondary: #5C5849;   /* warm mid-gray — body text, descriptions */
-  --color-text-muted: #9B9688;       /* muted — captions, tags, meta info */
+  --color-text-muted: #69665C;       /* muted — captions, tags, meta info (WCAG AA: 4.5:1 on all bg) */
 
   /* ══════════════════════════════════════════════
      ACCENT COLORS
      Yellow is THE signature color of this site.
      Use it sparingly and intentionally (see docs).
      ══════════════════════════════════════════════ */
-  --color-accent: #E8D96A;           /* pastel yellow — THE signature color */
+  --color-accent: #E8D96A;           /* pastel yellow — THE signature color (fills, focus rings) */
   --color-accent-hover: #D9C94F;     /* slightly darker yellow for hover states */
   --color-accent-subtle: #F5F0C0;    /* very pale yellow — backgrounds, highlights */
+  --color-accent-text: #746D35;      /* darkened yellow for accent TEXT/icons — the pale yellow
+                                        fails contrast as foreground on light bg (1.38:1). Use this
+                                        token whenever the accent is a text or icon color, not a fill.
+                                        WCAG AA: 5.04:1 on bg-primary, 4.55:1 on accent-subtle. */
 
   /* ══════════════════════════════════════════════
      EARTH TONE ACCENTS
@@ -57,7 +61,7 @@
      Subtle warm grays for card outlines and dividers.
      ══════════════════════════════════════════════ */
   --color-border: #DDD9CC;           /* warm light gray — card borders, dividers */
-  --color-border-strong: #C4BFB0;    /* slightly stronger — focused elements */
+  --color-border-strong: #959186;    /* stronger — control boundaries (WCAG AA: 3:1 on bg-primary) */
 
   /* ══════════════════════════════════════════════
      UTILITY COLORS

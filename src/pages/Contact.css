@@ -80,7 +80,7 @@
 }
 
 .contact__email:hover {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .contact__email:focus-visible {
@@ -112,7 +112,7 @@
 }
 
 .contact__social-link:hover {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .contact__social-link:focus-visible {

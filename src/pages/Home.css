@@ -150,7 +150,7 @@
 }
 
 .home__see-all-link:hover {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .home__see-all-link:focus-visible {
@@ -211,7 +211,7 @@
 }
 
 .home__contact-email:hover {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .home__contact-email:focus-visible {

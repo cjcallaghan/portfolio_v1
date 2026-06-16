@@ -29,7 +29,7 @@
      ══════════════════════════════════════════════ */
   --color-text-primary: #F0EDE0;     /* warm off-white — headings */
   --color-text-secondary: #B8B4A4;   /* warm mid-gray — body text */
-  --color-text-muted: #7A7668;       /* muted — captions, meta */
+  --color-text-muted: #969388;       /* muted — captions, meta (WCAG AA: 4.5:1 on all dark bg) */
 
   /* ══════════════════════════════════════════════
      ACCENT COLORS — yellow stays, slightly richer
@@ -38,6 +38,8 @@
   --color-accent: #D9C94F;           /* same yellow, slightly richer for dark bg */
   --color-accent-hover: #C9B83A;     /* hover */
   --color-accent-subtle: #2A2810;    /* dark yellow tint for backgrounds */
+  --color-accent-text: #D9C94F;      /* accent text/icons — the richer yellow already passes on
+                                        dark bg (10.41:1), so no darkening needed here. */
 
   /* ══════════════════════════════════════════════
      EARTH TONES — darkened to match palette feel
@@ -49,7 +51,7 @@
      BORDER & DIVIDER — warm dark borders
      ══════════════════════════════════════════════ */
   --color-border: #3A3828;           /* dark warm border */
-  --color-border-strong: #504E3C;    /* stronger border for dark mode */
+  --color-border-strong: #696757;    /* stronger — control boundaries (WCAG AA: 3:1 on bg-primary) */
 
   /* ══════════════════════════════════════════════
      UTILITY

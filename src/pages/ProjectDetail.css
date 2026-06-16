@@ -32,7 +32,7 @@
 }
 
 .project-detail__back-link:hover {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .project-detail__back-link:focus-visible {

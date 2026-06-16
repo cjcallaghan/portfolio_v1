@@ -189,7 +189,7 @@
 }
 
 .project-card__ext-link:hover {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .project-card__ext-link:focus-visible {
