@@ -16,6 +16,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';  /* NavLink automatically adds an "active" class to the current page's link */
+import { useCreativeMode } from '../App';
 import './Navbar.css';
 
 /* The navigation links array — add or remove items here to change the nav */
@@ -37,26 +38,26 @@ export default function Navbar() {
     Creative mode. When true, the navbar morphs from a plain full-width
     bar into a centered, rounded, frosted-glass floating island.
 
-    This is its OWN persisted setting (separate from light/dark theme), so the
-    user's choice survives refreshes. It pairs with the site theme: the glass
-    surface tints darker automatically in dark mode (see theme.css).
+    The mode itself (and its persistence) lives in CreativeModeContext, separate
+    from light/dark theme, so any component can read it as creative mode expands
+    across the site. The navbar just consumes it here. It pairs with the site
+    theme: the glass surface tints darker automatically in dark mode (theme.css).
   */
-  const [glass, setGlass] = useState(() => {
-    return localStorage.getItem('navStyle') === 'glass';
-  });
+  const { creative, toggleCreative } = useCreativeMode();
+
+  /*
+    morphing is a navbar-only transient flag that drives the one-shot morph
+    animation when the mode flips. It is not global state, so it stays local.
+  */
   const [morphing, setMorphing] = useState(false);
   const morphTimerRef = useRef(null);
 
   function toggleGlass() {
-    setGlass(prev => !prev);
+    toggleCreative();
     setMorphing(true);
     clearTimeout(morphTimerRef.current);
     morphTimerRef.current = setTimeout(() => setMorphing(false), 900);
   }
-
-  useEffect(() => {
-    localStorage.setItem('navStyle', glass ? 'glass' : 'plain');
-  }, [glass]);
 
   useEffect(() => {
     return () => clearTimeout(morphTimerRef.current);
@@ -105,7 +106,7 @@ export default function Navbar() {
       explicit helps some older screen readers.
     */
     <header
-      className={`navbar${scrolled ? ' navbar--scrolled' : ''}${menuOpen ? ' navbar--menu-open' : ''}${glass ? ' navbar--glass' : ''}${morphing ? ' navbar--morphing' : ''}`}
+      className={`navbar${scrolled ? ' navbar--scrolled' : ''}${menuOpen ? ' navbar--menu-open' : ''}${creative ? ' navbar--glass' : ''}${morphing ? ' navbar--morphing' : ''}`}
       role="banner"
     >
       <div className="navbar__inner container">
@@ -156,9 +157,9 @@ export default function Navbar() {
           <button
             className="navbar__morph-toggle"
             onClick={toggleGlass}
-            aria-pressed={glass}
-            aria-label={glass ? 'Switch to plain navbar' : 'Switch to creative mode'}
-            title={glass ? 'Plain navbar' : 'Creative mode'}
+            aria-pressed={creative}
+            aria-label={creative ? 'Switch to plain navbar' : 'Switch to creative mode'}
+            title={creative ? 'Plain navbar' : 'Creative mode'}
           >
             <svg
               className="navbar__morph-icon"
