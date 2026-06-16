@@ -63,4 +63,21 @@
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.20);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.25);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.30);
+
+  /* ══════════════════════════════════════════════
+     CREATIVE MODE — dark tint
+     The frosted surface goes from milky-white to a
+     deep warm smoke: lower fill opacity (so more of
+     the dark page shows through), a faint white rim
+     instead of a bright one, and a deeper float
+     shadow. Blur / saturation are inherited from
+     global.css — only the colors change here.
+     ══════════════════════════════════════════════ */
+  --glass-bg: rgba(36, 34, 24, 0.45);          /* warm smoked glass */
+  --glass-bg-strong: rgba(46, 44, 32, 0.66);   /* hover / nested */
+  --glass-border: rgba(255, 255, 255, 0.12);   /* subtle rim light */
+  --glass-highlight: rgba(255, 255, 255, 0.10);/* faint top highlight */
+  --glass-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.50),
+    inset 0 1px 0 var(--glass-highlight);
 }

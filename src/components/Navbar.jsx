@@ -14,8 +14,9 @@
   ──────────────────────────────────────────────────────────────────────────────
 */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';  /* NavLink automatically adds an "active" class to the current page's link */
+import { useCreativeMode } from '../App';
 import './Navbar.css';
 
 /* The navigation links array — add or remove items here to change the nav */
@@ -32,6 +33,35 @@ export default function Navbar() {
 
   /* Whether the mobile menu is open */
   const [menuOpen, setMenuOpen] = useState(false);
+
+  /*
+    Creative mode. When true, the navbar morphs from a plain full-width
+    bar into a centered, rounded, frosted-glass floating island.
+
+    The mode itself (and its persistence) lives in CreativeModeContext, separate
+    from light/dark theme, so any component can read it as creative mode expands
+    across the site. The navbar just consumes it here. It pairs with the site
+    theme: the glass surface tints darker automatically in dark mode (theme.css).
+  */
+  const { creative, toggleCreative } = useCreativeMode();
+
+  /*
+    morphing is a navbar-only transient flag that drives the one-shot morph
+    animation when the mode flips. It is not global state, so it stays local.
+  */
+  const [morphing, setMorphing] = useState(false);
+  const morphTimerRef = useRef(null);
+
+  function toggleGlass() {
+    toggleCreative();
+    setMorphing(true);
+    clearTimeout(morphTimerRef.current);
+    morphTimerRef.current = setTimeout(() => setMorphing(false), 900);
+  }
+
+  useEffect(() => {
+    return () => clearTimeout(morphTimerRef.current);
+  }, []);
 
   /*
     Listen for scroll events. When the user scrolls past 10px, set scrolled to
@@ -76,7 +106,7 @@ export default function Navbar() {
       explicit helps some older screen readers.
     */
     <header
-      className={`navbar${scrolled ? ' navbar--scrolled' : ''}${menuOpen ? ' navbar--menu-open' : ''}`}
+      className={`navbar${scrolled ? ' navbar--scrolled' : ''}${menuOpen ? ' navbar--menu-open' : ''}${creative ? ' navbar--glass' : ''}${morphing ? ' navbar--morphing' : ''}`}
       role="banner"
     >
       <div className="navbar__inner container">
@@ -116,8 +146,45 @@ export default function Navbar() {
           </ul>
         </nav>
 
-        {/* ── RIGHT SIDE: HAMBURGER ── */}
+        {/* ── RIGHT SIDE: MORPH TOGGLE + HAMBURGER ── */}
         <div className="navbar__right">
+
+          {/*
+            Creative mode toggle. Flips the navbar between its plain bar
+            and frosted floating-island forms. aria-pressed communicates the
+            on/off state to assistive tech.
+          */}
+          <button
+            className="navbar__morph-toggle"
+            onClick={toggleGlass}
+            aria-pressed={creative}
+            aria-label={creative ? 'Switch to plain navbar' : 'Switch to creative mode'}
+            title={creative ? 'Plain navbar' : 'Creative mode'}
+          >
+            <svg
+              className="navbar__morph-icon"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              {/* Power button icon */}
+              <path
+                d="M12 3v9"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+              <path
+                d="M7.5 5.8A8 8 0 1 0 16.5 5.8"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                fill="none"
+              />
+            </svg>
+          </button>
 
           {/* Hamburger menu button — only visible on mobile (< 768px) */}
           <button

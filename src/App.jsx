@@ -54,6 +54,21 @@ export const ThemeContext = createContext({
 /* Custom hook — any component can call useTheme() to get theme + toggleTheme */
 export const useTheme = () => useContext(ThemeContext);
 
+/* ──────────────────────────────────────────────────────────────────────────────
+   CREATIVE MODE CONTEXT
+   Separate from light/dark theme. This is the site's "professional vs. creative"
+   mode — currently the navbar is the only thing that responds to it, but it lives
+   here (not inside Navbar) so any component can read it as creative mode expands
+   across the site. Same pattern as ThemeContext above.
+   ────────────────────────────────────────────────────────────────────────────── */
+export const CreativeModeContext = createContext({
+  creative: false,
+  toggleCreative: () => {},
+});
+
+/* Custom hook — any component can call useCreativeMode() to get creative + toggle */
+export const useCreativeMode = () => useContext(CreativeModeContext);
+
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -102,6 +117,34 @@ function ThemeProvider({ children }) {
 }
 
 /* ──────────────────────────────────────────────────────────────────────────────
+   CREATIVE MODE PROVIDER COMPONENT
+   Manages the creative/professional mode state and persists it to localStorage
+   under the key 'mode' ('creative' | 'professional'). Mirrors ThemeProvider.
+   ────────────────────────────────────────────────────────────────────────────── */
+function CreativeModeProvider({ children }) {
+  /* Initialize from localStorage. Anything other than 'creative' is professional. */
+  const [creative, setCreative] = useState(() => {
+    return localStorage.getItem('mode') === 'creative';
+  });
+
+  /* Persist the choice so it survives refreshes. */
+  useEffect(() => {
+    localStorage.setItem('mode', creative ? 'creative' : 'professional');
+  }, [creative]);
+
+  /* Flip between creative and professional */
+  function toggleCreative() {
+    setCreative(prev => !prev);
+  }
+
+  return (
+    <CreativeModeContext.Provider value={{ creative, toggleCreative }}>
+      {children}
+    </CreativeModeContext.Provider>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────
    APP COMPONENT
    The root of the component tree. Wraps everything in ThemeProvider (so all
    components can access the theme) and BrowserRouter (so routing works).
@@ -109,6 +152,7 @@ function ThemeProvider({ children }) {
 export default function App() {
   return (
     <ThemeProvider>
+      <CreativeModeProvider>
       <BrowserRouter>
         {/*
           Skip to main content link — the very first focusable element on the page.
@@ -140,6 +184,7 @@ export default function App() {
         {/* Footer, shared across all pages */}
         <Footer />
       </BrowserRouter>
+      </CreativeModeProvider>
     </ThemeProvider>
   );
 }
