@@ -345,8 +345,10 @@
   border-radius: 999px;
 }
 
+/* The power button keeps its plain-mode hover color (tertiary bg) even in
+   glass mode, instead of the accent-tinted pill the nav links use. */
 .navbar--glass .navbar__morph-toggle:hover {
-  background-color: var(--color-accent-subtle);
+  background-color: var(--color-bg-tertiary);
   border-color: transparent;
 }
 
@@ -369,7 +371,7 @@
 
 .navbar__morph-toggle[aria-pressed="true"]:hover .navbar__morph-icon {
   transform: scale(1.15);
-  color: var(--color-accent);
+  color: var(--color-text-primary);
 }
 
 /* ── HAMBURGER BUTTON — mobile only ── */
